@@ -17,7 +17,6 @@ public class MovieTheatreService {
             }
         } catch (IOException io) {
         }
-        System.out.println(shows);
     }
 
     private void manageTheMap(String nextLine) {
