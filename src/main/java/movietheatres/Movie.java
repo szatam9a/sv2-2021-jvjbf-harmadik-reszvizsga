@@ -35,7 +35,7 @@ public class Movie implements Comparable<Movie> {
 
     @Override
     public int compareTo(Movie o) {
-        return o.getStartTime().compareTo(this.getStartTime());
+        return this.getStartTime().compareTo(o.getStartTime());
     }
 
     @Override

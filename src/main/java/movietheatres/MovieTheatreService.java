@@ -8,7 +8,12 @@ import java.time.LocalTime;
 import java.util.*;
 
 public class MovieTheatreService {
-    private Map<String, List<Movie>> shows = new TreeMap<>();
+    private Map<String, List<Movie>> shows = new TreeMap<>(new Comparator<String>() {
+        @Override
+        public int compare(String o1, String o2) {
+            return 0;
+        }
+    });
 
     public void readFromFile(Path path) {
         try (BufferedReader br = Files.newBufferedReader(path)) {
@@ -37,13 +42,13 @@ public class MovieTheatreService {
                 return;
             }
         }
-
     }
 
     private void validateMovie(String movie) {
         if (!shows.keySet().contains(movie)) {
             shows.put(movie, new LinkedList<>());
         }
+        System.out.println(movie);
     }
 
     public List<String> findMovie(String title) {
