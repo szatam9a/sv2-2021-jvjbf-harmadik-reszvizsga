@@ -37,6 +37,7 @@ public class MovieTheatreService {
         List<Movie> toAdd;
         for (Map.Entry<String, List<Movie>> actual : shows.entrySet()) {
             if (actual.getKey().equals(movie)) {
+                System.out.println(actual);
                 toAdd = actual.getValue();
                 toAdd.add(new Movie(title, LocalTime.parse(StartTime)));
                 return;
@@ -48,7 +49,6 @@ public class MovieTheatreService {
         if (!shows.keySet().contains(movie)) {
             shows.put(movie, new LinkedList<>());
         }
-        System.out.println(movie);
     }
 
     public List<String> findMovie(String title) {
