@@ -7,17 +7,25 @@ public class Movie implements Comparable<Movie> {
     private String title;
     private LocalTime startTime;
 
-    public Movie(String title, LocalTime startTime) {
-        this.title = title;
-        this.startTime = startTime;
-    }
-
     public String getTitle() {
         return title;
     }
 
     public LocalTime getStartTime() {
         return startTime;
+    }
+
+    public Movie(String title, LocalTime startTime) {
+        this.title = title;
+        this.startTime = startTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "title='" + title + '\'' +
+                ", startTime=" + startTime +
+                '}';
     }
 
     @Override
@@ -36,13 +44,5 @@ public class Movie implements Comparable<Movie> {
     @Override
     public int compareTo(Movie o) {
         return this.getStartTime().compareTo(o.getStartTime());
-    }
-
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "title='" + title + '\'' +
-                ", startTime=" + startTime +
-                '}';
     }
 }

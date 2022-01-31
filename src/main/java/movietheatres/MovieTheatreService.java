@@ -1,76 +1,62 @@
 package movietheatres;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.concurrent.ConcurrentMap;
 
 public class MovieTheatreService {
-    private Map<String, List<Movie>> shows = new TreeMap<>(new Comparator<String>() {
-        @Override
-        public int compare(String o1, String o2) {
-            return 0;
-        }
-    });
+    private Map<String, List<Movie>> shows = new LinkedHashMap<>();
 
     public void readFromFile(Path path) {
-        try (BufferedReader br = Files.newBufferedReader(path)) {
-            String next;
-            String[] tmp;
-            String movieName;
-            while ((next = br.readLine()) != null) {
-                tmp = next.split("-");
-                movieName = tmp[0];
-                tmp = tmp[1].split(";");
-                validateMovie(movieName);
-                putInMovie(movieName, tmp[0], tmp[1]);
-            }
+        try (Scanner sc = new Scanner(path)) {
+            while (sc.hasNext()) {
 
+                manageTheMap(sc.nextLine());
+            }
         } catch (IOException io) {
-            throw new IllegalArgumentException("No file");
+        }
+        System.out.println(shows);
+    }
+
+    private void manageTheMap(String nextLine) {
+        Scanner s = new Scanner(nextLine);
+        s.useDelimiter("[-;]");
+        String cinema = s.next();
+        String movie = s.next();
+        String startTime = s.next();
+        if (!shows.containsKey(cinema)) {
+            shows.put(cinema, new LinkedList<>());
+        }
+        shows.get(cinema).add(new Movie(movie, LocalTime.parse(startTime)));
+        for (Map.Entry<String, List<Movie>> ac : shows.entrySet()) {
+            Collections.sort(ac.getValue());
         }
     }
 
-    private void putInMovie(String movie, String title, String StartTime) {
-        List<Movie> toAdd;
-        for (Map.Entry<String, List<Movie>> actual : shows.entrySet()) {
-            if (actual.getKey().equals(movie)) {
-                System.out.println(actual);
-                toAdd = actual.getValue();
-                toAdd.add(new Movie(title, LocalTime.parse(StartTime)));
-                return;
-            }
-        }
-    }
-
-    private void validateMovie(String movie) {
-        if (!shows.keySet().contains(movie)) {
-            shows.put(movie, new LinkedList<>());
-        }
-    }
-
-    public List<String> findMovie(String title) {
-        return shows.entrySet().stream().filter(e -> e.getValue().contains(new Movie(title, LocalTime.now()))).map(e -> e.getKey()).toList();
+    public MovieTheatreService() {
     }
 
     public Map<String, List<Movie>> getShows() {
         return shows;
     }
 
+    public List<String> findMovie(String title) {
+        return shows.entrySet().
+                stream().
+                filter(e -> e.getValue().
+                        contains(new Movie(title, LocalTime.now()))).
+                map(e -> e.getKey()).
+                toList();
+    }
+
     public LocalTime findLatestShow(String title) {
-        List<Movie> movies;
-        movies = shows.values().stream().flatMap(e -> e.stream()).filter(e -> e.getTitle().equals(title)).toList();
-        LocalTime latestT = LocalTime.of(0,0);
-        Movie latestM = movies.get(0) ;
-        for (Movie m : movies) {
-            if (m.getStartTime().isAfter(latestT)){
-                latestM= m;
-                latestT=m.getStartTime();
+        return shows.values().stream().flatMap(e -> e.stream()).filter(e -> e.getTitle().equals(title)).sorted(new Comparator<Movie>() {
+            @Override
+            public int compare(Movie o1, Movie o2) {
+                return o2.getStartTime().compareTo(o1.getStartTime());
             }
-        }
-        return latestT;
-        //return movies.stream().map(e -> e.getStartTime()).findFirst().orElseThrow(() -> new IllegalArgumentException("no movie"));
+        }).map(e -> e.getStartTime()).findFirst().orElseThrow(() -> new IllegalArgumentException("no show"));
     }
 }
