@@ -8,7 +8,7 @@ import java.time.LocalTime;
 import java.util.*;
 
 public class MovieTheatreService {
-    private Map<String, List<Movie>> shows = new HashMap<>();
+    private Map<String, List<Movie>> shows = new TreeMap<>();
 
     public void readFromFile(Path path) {
         try (BufferedReader br = Files.newBufferedReader(path)) {
@@ -56,7 +56,7 @@ public class MovieTheatreService {
 
     public LocalTime findLatestShow(String title) {
         List<Movie> movies;
-        movies = shows.values().stream().flatMap(e -> e.stream()).toList();
+        movies = shows.values().stream().flatMap(e -> e.stream()).filter(e -> e.getTitle().equals(title)).toList();
         return movies.stream().map(e -> e.getStartTime()).findFirst().orElseThrow(() -> new IllegalArgumentException("no movie"));
     }
 }

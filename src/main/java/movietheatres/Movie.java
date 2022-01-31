@@ -37,4 +37,12 @@ public class Movie implements Comparable<Movie> {
     public int compareTo(Movie o) {
         return o.getStartTime().compareTo(this.getStartTime());
     }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "title='" + title + '\'' +
+                ", startTime=" + startTime +
+                '}';
+    }
 }
