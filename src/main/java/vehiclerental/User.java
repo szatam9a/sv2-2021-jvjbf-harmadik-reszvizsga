@@ -3,22 +3,22 @@ package vehiclerental;
 import java.util.Objects;
 
 public class User {
-    private String name;
+    private String userName;
     private String email;
     private int balance;
 
     public User(String name, String email, int balance) {
-        this.name = name;
+        this.userName = name;
         this.email = email;
         this.balance = balance;
     }
 
-    public void minus(int minus) {
+    public void minusBalance(int minus) {
         this.balance -= minus;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
     public String getEmail() {
@@ -34,11 +34,11 @@ public class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return Objects.equals(getName(), user.getName());
+        return Objects.equals(getUserName(), user.getUserName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName());
+        return Objects.hash(getUserName());
     }
 }
