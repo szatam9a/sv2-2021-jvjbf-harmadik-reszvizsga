@@ -39,8 +39,9 @@ public class RentService {
                     return false;
                 }
             }
-        }
-        return true;
+        } else
+            return true;
+        return false;
     }
 
     private void validateUserForRent(User user, Rentable rentable, LocalTime time) {
