@@ -1,36 +1,35 @@
 package vehiclerental;
 
 import java.time.LocalTime;
-import java.util.Objects;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Car implements Rentable {
-    private String ID;
+    private String id;
     private LocalTime rentingTime;
-    private int pricePerMinute;
+    private int pricePerMin;
 
-    public Car(String ID, int pricePerMinute) {
-        this.ID = ID;
-        this.pricePerMinute = pricePerMinute;
+    public Car(String id, int pricePerMin) {
+        this.id = id;
+        this.pricePerMin = pricePerMin;
     }
 
     @Override
     public int calculateSumPrice(long minutes) {
-        return (int) (pricePerMinute * minutes);
+        return (int) (this.pricePerMin * minutes);
     }
-
-    @Override
     public void rent(LocalTime time) {
         this.rentingTime = time;
     }
 
-    @Override
     public void closeRent() {
         this.rentingTime = null;
     }
 
-    @Override
-    public int compareTo(Rentable o) {
-        return this.rentingTime.compareTo(o.getRentingTime());
+    public String getId() {
+        return id;
     }
 
     @Override
@@ -38,18 +37,7 @@ public class Car implements Rentable {
         return rentingTime;
     }
 
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Car)) return false;
-        Car car = (Car) o;
-        return Objects.equals(ID, car.ID);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(ID);
+    public int getPricePerMin() {
+        return pricePerMin;
     }
 }

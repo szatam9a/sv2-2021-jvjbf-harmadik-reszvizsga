@@ -51,6 +51,13 @@ public class MovieTheatreService {
     }
 
     public LocalTime findLatestShow(String title) {
-        return shows.values().stream().flatMap(e -> e.stream()).filter(e -> e.getTitle().equals(title)).sorted((o1, o2) -> o2.getStartTime().compareTo(o1.getStartTime())).map(e -> e.getStartTime()).findFirst().orElseThrow(() -> new IllegalArgumentException("no show"));
+        return shows.values().
+                stream().
+                flatMap(e -> e.stream()).
+                filter(e -> e.getTitle().
+                        equals(title)).sorted((o1, o2) -> o2.getStartTime().
+                        compareTo(o1.getStartTime())).
+                map(e -> e.getStartTime()).
+                findFirst().orElseThrow(() -> new IllegalArgumentException("no show"));
     }
 }
